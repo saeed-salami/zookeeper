@@ -5,7 +5,9 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class ZookeeperConfig {
 
     @Value("${spring.cloud.zookeeper.connect-string}")
@@ -19,10 +21,9 @@ public class ZookeeperConfig {
 
     @Bean
     public CuratorFramework curatorFramework() {
-        CuratorFramework curatorFramework = CuratorFrameworkFactory.newClient(
+        return CuratorFrameworkFactory.newClient(
                 connectString, new ExponentialBackoffRetry(baseSleepTimeMs, maxRetries)
         );
-        curatorFramework.start();
-        return curatorFramework;
+
     }
 }
