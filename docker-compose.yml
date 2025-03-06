@@ -1,35 +1,38 @@
-version: '3'
+version: '3.8'
 
 services:
-  zk1:
+  zookeeper1:
     image: bitnami/zookeeper:3.6.2
-    container_name: zk1
-    hostname: zk1
+    container_name: zookeeper1
     ports:
       - "2181:2181"
     environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
       - ZOO_SERVER_ID=1
-      - ZOO_SERVERS=0.0.0.0:2888:3888,zk2:2888:3888,zk3:2888:3888
+      - ZOO_SERVERS=0.0.0.0:2888:3888,zookeeper2:2888:3888,zookeeper3:2888:3888
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    volumes:
+      - ./zk-data1:/bitnami/zookeeper
 
-  zk2:
+  zookeeper2:
     image: bitnami/zookeeper:3.6.2
-    container_name: zk2
-    hostname: zk2
+    container_name: zookeeper2
     ports:
       - "2182:2181"
     environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
       - ZOO_SERVER_ID=2
-      - ZOO_SERVERS=zk1:2888:3888,0.0.0.0:2888:3888,zk3:2888:3888
+      - ZOO_SERVERS=zookeeper1:2888:3888,0.0.0.0:2888:3888,zookeeper3:2888:3888
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    volumes:
+      - ./zk-data2:/bitnami/zookeeper
 
-  zk3:
+  zookeeper3:
     image: bitnami/zookeeper:3.6.2
-    container_name: zk3
-    hostname: zk3
+    container_name: zookeeper3
     ports:
       - "2183:2181"
     environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
       - ZOO_SERVER_ID=3
-      - ZOO_SERVERS=zk1:2888:3888,zk2:2888:3888,0.0.0.0:2888:3888
+      - ZOO_SERVERS=zookeeper1:2888:3888,zookeeper2:2888:3888,0.0.0.0:2888:3888
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    volumes:
+      - ./zk-data3:/bitnami/zookeeper

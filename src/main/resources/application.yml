@@ -4,3 +4,8 @@ spring:
       connect-string: localhost:2181
       baseSleepTimeMs: 1000
       maxRetries: 3
+app:
+  resources:
+    - resource1
+    - resource2
+    - resource3
